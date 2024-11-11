@@ -7,36 +7,38 @@ local Tab = Window:MakeTab({
 	PremiumOnly = false
 })
 
--- Função para obter a velocidade atual do personagem
+-- Variável de controle
 local noclipEnabled = false
 
--- Função para ativar/desativar noclip
+-- Função para ativar ou desativar o noclip
 local function toggleNoclip(value)
-    noclipEnabled = value  -- Ativa ou desativa o noclip com base no valor da toggle
+    noclipEnabled = value
     if noclipEnabled then
-        print("Noclip ativado!")
-    else
-        print("Noclip desativado!")
-    end
-end
-
--- Adiciona a toggle para noclip
-Tab:AddToggle({
-    Name = "Noclip",
-    Default = false,
-    Callback = toggleNoclip
-})
-
--- Função que desativa as colisões se o noclip estiver ativado
-game:GetService("RunService").Stepped:Connect(function()
-    if noclipEnabled then
-        local character = game.Players.LocalPlayer.Character
-        if character then
-            for _, part in pairs(character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = false
+        -- Ativa o noclip, removendo colisões
+        game:GetService("RunService").Stepped:Connect(function()
+            if noclipEnabled and game.Players.LocalPlayer.Character then
+                for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                    if part:IsA("BasePart") and part.CanCollide == true then
+                        part.CanCollide = false
+                    end
                 end
+            end
+        end)
+    else
+        -- Desativa o noclip, restaurando colisões
+        for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = true
             end
         end
     end
-end)
+end
+
+-- Toggle da Orion Library
+Tab:AddToggle({
+    Name = "Noclip",
+    Default = false,
+    Callback = function(value)
+        toggleNoclip(value)
+    end
+})
