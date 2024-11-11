@@ -8,37 +8,39 @@ local Tab = Window:MakeTab({
 })
 
 -- Variável de controle
-local noclipEnabled = false
+local Clip = true  -- Variável de controle para noclip
+local Noclipping  -- Variável para armazenar a conexão do evento RunService.Stepped
 
--- Função para ativar ou desativar o noclip
-local function toggleNoclip(value)
-    noclipEnabled = value
-    if noclipEnabled then
-        -- Ativa o noclip, removendo colisões
-        game:GetService("RunService").Stepped:Connect(function()
-            if noclipEnabled and game.Players.LocalPlayer.Character then
-                for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-                    if part:IsA("BasePart") and part.CanCollide == true then
-                        part.CanCollide = false
-                    end
-                end
-            end
-        end)
-    else
-        -- Desativa o noclip, restaurando colisões
-        for _, part in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = true
+-- Função que executa o loop de noclip
+local function NoclipLoop()
+    if not Clip and game.Players.LocalPlayer.Character then
+        for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+            if child:IsA("BasePart") and child.CanCollide == true then
+                child.CanCollide = false
             end
         end
     end
 end
 
--- Toggle da Orion Library
+-- Toggle da Orion Library para ativar/desativar o noclip
 Tab:AddToggle({
     Name = "Noclip",
     Default = false,
     Callback = function(value)
-        toggleNoclip(value)
+        Clip = not value  -- Alterna a variável Clip com base na toggle
+        if Clip then
+            -- Desativa o noclip e desconecta o evento
+            if Noclipping then
+                Noclipping:Disconnect()
+            end
+            for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+                if child:IsA("BasePart") then
+                    child.CanCollide = true
+                end
+            end
+        else
+            -- Ativa o noclip e conecta o evento
+            Noclipping = game:GetService("RunService").Stepped:Connect(NoclipLoop)
+        end
     end
 })
