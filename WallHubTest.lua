@@ -8,7 +8,7 @@ local infoTab = Window:MakeTab({
 })
 
 
-local SpeedSlider = Tab:AddSlider({
+local SpeedSlider = infoTab:AddSlider({
     Name = "WalkSpeed",
     Min = 0,
     Max = 400,
