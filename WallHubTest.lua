@@ -61,3 +61,18 @@ OrionLib:MakeNotification({
     Image = "rbxassetid://4483345998",
     Time = 5
 })
+
+local player = game.Players.LocalPlayer
+local humanoid = player.Character:WaitForChild("Humanoid")
+
+-- Cria o slider para a velocidade
+Tab:AddSlider({
+    Name = "Velocidade",
+    Min = 0,  -- Valor mínimo
+    Max = 100,  -- Valor máximo
+    Default = humanoid.WalkSpeed,  -- Define a velocidade atual como o valor padrão
+    Increment = 1,  -- Incremento do valor ao mover o slider
+    Callback = function(Value)
+        humanoid.WalkSpeed = Value  -- Ajusta a velocidade do jogador com o valor do slider
+    end
+})
