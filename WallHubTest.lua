@@ -11,6 +11,6 @@ local function NotificationP(Conteudo, Id, Time)
 end
 
 TestTab:AddButton({
-    Name = "Nome do Botão", Callback = function(); Notification("", "", "") end })
+    Name = "Nome do Botão", Callback = function() Notification("", "", "") end })
 
 OrionLib:Init()
