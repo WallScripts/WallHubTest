@@ -8,6 +8,6 @@ local function Notification(ScriptName)
 end
 
 TestTab:AddButton({
-    Name = "Nome do Botão", Callback = function(); Notification("teste, 4483345998") end })
+    Name = "Nome do Botão", Callback = function(); Notification("teste", "4483345998") end })
 
 OrionLib:Init()
