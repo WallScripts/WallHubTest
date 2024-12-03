@@ -3,11 +3,14 @@ local Window = OrionLib:MakeWindow({IntroText = "Wall Hub(testes)", IntroIcon = 
 
 local TestTab = Window:MakeTab({ Name = "Testes", Icon = "rbxassetid://4483345998", })
 
-local function Notification(ScriptName, Id) 
-      OrionLib:MakeNotification({ Name = "Wall Hub System", Content = "O " .. ScriptName .. " foi executado", Image = "rbxassetid://".. Id, Time = 5 })
+local function NotificationP(Conteudo, Id, Time) 
+      Conteudo = Conteudo or "Oque essa notificação vai dizer?"
+	Id = Id or 7733911828
+	Time = Time or 5
+	OrionLib:MakeNotification({ Name = "Wall Hub System", Content = Conteudo, Image = "rbxassetid://" .. Id, Time = Time })
 end
 
 TestTab:AddButton({
-    Name = "Nome do Botão", Callback = function(); Notification("teste", "4483345998") end })
+    Name = "Nome do Botão", Callback = function(); Notification("", "", "") end })
 
 OrionLib:Init()
